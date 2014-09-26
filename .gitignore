@@ -3,3 +3,8 @@
 MANIFEST
 build/
 dist/
+
+
+# OSX
+*.DS_Store
+.idea/

@@ -15,7 +15,7 @@ class Setting(models.Model):
     module_name = models.CharField(max_length=255)
     class_name = models.CharField(max_length=255, blank=True)
     attribute_name = models.CharField(max_length=255)
-    value = models.CharField(max_length=255, blank=True)
+    value = models.TextField(blank=True)
 
     objects = SettingManager()
 

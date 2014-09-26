@@ -24,6 +24,25 @@ will be used to represent the settings that are stored in the database. Then,
 the settings may edited at run-time using the provided editor, and all Python
 code in your application that uses the setting will receive the updated value.
 
+
+Forked for CMS Enhancements
+============
+
+The rwhitman/django-dbsettings fork has some special feature enhancements for ad-hoc CMS use:
+
+    * Model value uses a text field instead of a char 255 field, for larger content storage
+
+    * Enhanced TextValue to use a text area widget
+
+    * Added TinyMCE support. If django-tinymce is installed, an HTMLValue field will show
+    a TinyMCE form, otherwise defaults to a text area
+
+    * Many improvements to Admin UI, better presentation of Groups, form field styling
+    table layout fixes
+
+
+
+
 Requirements
 ============
 
@@ -344,6 +363,17 @@ StringValue
 
 Presents a standard input, accepting any text string up to 255 characters. In
 Python, the value is accessed as a standard string.
+
+TextValue
+-----------
+
+*New* Presents a text area input for large blocks of text.
+
+HTMLValue
+-----------
+
+*New* Presents a TinyMCE field, if TinyMCE is installed. Otherwise defaults to a text area.
+
 
 DateTimeValue
 -------------

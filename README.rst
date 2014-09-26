@@ -31,17 +31,9 @@ Forked for CMS Enhancements
 The rwhitman/django-dbsettings fork has some special feature enhancements for ad-hoc CMS use:
 
     * Model value uses a text field instead of a char 255 field, for larger content storage
-
     * Enhanced TextValue to use a text area widget
-
-    * Added TinyMCE support. If django-tinymce is installed, an HTMLValue field will show
-    a TinyMCE form, otherwise defaults to a text area
-
-    * Many improvements to Admin UI, better presentation of Groups, form field styling
-    table layout fixes
-
-
-
+    * Added TinyMCE support. If django-tinymce is installed, an HTMLValue field will show a TinyMCE form, otherwise defaults to a text area
+    * Many improvements to Admin UI, better presentation of Groups, form field styling table layout fixes
 
 Requirements
 ============

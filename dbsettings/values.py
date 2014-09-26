@@ -21,7 +21,7 @@ __all__ = ['Value', 'BooleanValue', 'DecimalValue', 'EmailValue',
            'DurationValue', 'FloatValue', 'IntegerValue', 'PercentValue',
            'PositiveIntegerValue', 'StringValue', 'TextValue', 'PasswordValue',
            'MultiSeparatorValue', 'ImageValue',
-           'DateTimeValue', 'DateValue', 'TimeValue']
+           'DateTimeValue', 'DateValue', 'TimeValue', 'HTMLValue']
 
 
 class Value(object):
@@ -196,12 +196,16 @@ class PositiveIntegerValue(IntegerValue):
 
 class StringValue(Value):
     unitialized_value = ''
-    field = forms.CharField
+    class field(forms.CharField) :
+        widget = forms.TextInput(attrs={'class':'vTextField'})
 
 
 class TextValue(Value):
     unitialized_value = ''
     field = forms.CharField
+
+    class field(forms.CharField):
+        widget = forms.Textarea(attrs={'class':'vLargeTextField', 'cols' : 40, 'rows' : 10})
 
     def to_python(self, value):
         return six.text_type(value)
@@ -388,3 +392,13 @@ class TimeValue(DateTimeValue):
         if res is not None:
             return res.time()
         return res
+
+
+class HTMLValue(TextValue):
+    class field(forms.CharField):
+        try:
+            from tinymce.widgets import TinyMCE
+            widget = TinyMCE
+        except ImportError:
+            pass
+

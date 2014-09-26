@@ -2,7 +2,7 @@
 {% load i18n static %}
 {% load url from future %}
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}admin/css/forms.css" />{% endblock %}
+{% block extrastyle %}{{ form.media }}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}admin/css/forms.css" />{% endblock %}
 
 {% block coltype %}colMS{% endblock %}
 {% block bodyclass %}dbsettings{% endblock %}
@@ -24,19 +24,13 @@
 {% regroup form by module_name as modules %}
 <form enctype="multipart/form-data" method="post">
     {% for module in modules %}
-        <div class="module">
-            <table summary="{% filter capfirst %}{% blocktrans with module.grouper as name %}Models available in the {{ name }} application.{% endblocktrans %}{% endfilter %}" width="100%">
-            <caption>{% filter capfirst %}{{ module.grouper }}{% endfilter %}</caption>
-            {% regroup module.list by class_name as classes %}
-            {% for class in classes %}
-                <tr class="alt">
-                    <th>{% filter capfirst %}{% if class.grouper %}{{ class.grouper }}{% else %}{% trans "Application settings" %}{% endif %}{% endfilter %}</th>
-                    <th>&nbsp;</th>
-                </tr>
-                {% include "dbsettings/values.html" %}
-            {% endfor %}
-            </table>
-        </div>
+
+        <h2>{% filter capfirst %}{{ module.grouper }}{% endfilter %}</h2>
+        {% regroup module.list by class_name as classes %}
+        {% for class in classes %}
+            {% include "dbsettings/values.html" %}
+        {% endfor %}
+    <br>
     {% endfor %}
 {% csrf_token %}<input type="submit" value="Save" class="default" />
 </form>

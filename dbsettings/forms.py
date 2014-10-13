@@ -1,4 +1,5 @@
 import re
+import copy
 
 from collections import OrderedDict
 import django
@@ -51,27 +52,32 @@ def customized_editor(user, settings):
     verbose_names = {}
     apps = {}
     for setting in settings:
-        perm = '%s.can_edit_%s_settings' % (
-            setting.app,
-            setting.class_name.lower()
-        )
-        if user.has_perm(perm):
-            # Add the field to the customized field list
-            storage = get_setting_storage(*setting.key)
-            kwargs = {
-                'label': setting.description,
-                'help_text': setting.help_text,
-                # Provide current setting values for initializing the form
-                'initial': setting.to_editor(storage.value),
-                'required': setting.required,
-            }
-            if setting.choices:
-                field = forms.ChoiceField(choices=setting.choices, **kwargs)
-            else:
-                field = setting.field(**kwargs)
-            key = '%s__%s__%s' % setting.key
-            apps[key] = setting.app
-            base_fields[key] = field
-            verbose_names[key] = setting.verbose_name
+        if setting.show_in_editor :
+            perm = '%s.can_edit_%s_settings' % (
+                setting.app,
+                setting.class_name.lower()
+            )
+            if user.has_perm(perm):
+                # Add the field to the customized field list
+                storage = get_setting_storage(*setting.key)
+                kwargs = {
+                    'label': setting.description,
+                    'help_text': setting.help_text,
+                    # Provide current setting values for initializing the form
+                    'initial': setting.to_editor(storage.value),
+                    'required': setting.required,
+                }
+                if setting.choices:
+                    field = forms.ChoiceField(choices=setting.choices, **kwargs)
+                else:
+                    field = setting.field(**kwargs)
+                key = '%s__%s__%s' % setting.key
+                apps[key] = setting.app
+                base_fields[key] = field
+                if setting.readonly :
+                    # Simply setting this on the field sets all the fields of this type, make a copy of the field obj
+                    base_fields[key] = copy.deepcopy(field)
+                    base_fields[key].widget.attrs = {'readonly':'readonly'}
+                verbose_names[key] = setting.verbose_name
     attrs = {'base_fields': base_fields, 'verbose_names': verbose_names, 'apps': apps}
     return type('SettingsEditor', (SettingsEditor,), attrs)

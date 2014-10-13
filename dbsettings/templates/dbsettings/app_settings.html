@@ -1,8 +1,13 @@
 {% extends "admin/base_site.html" %}
 {% load i18n static %}
+
 {% load url from future %}
 
-{% block extrastyle %}{{ form.media }}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}admin/css/forms.css" />{% endblock %}
+{% block extrastyle %}
+{{ form.media }}{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}admin/css/forms.css" />
+<link rel="stylesheet" type="text/css" href="{% get_static_prefix %}dbsettings/dbsettings-admin-style.css" />
+{% endblock %}
 
 {% block coltype %}colMS{% endblock %}
 {% block bodyclass %}dbsettings{% endblock %}

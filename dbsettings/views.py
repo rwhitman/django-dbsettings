@@ -8,6 +8,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.text import capfirst
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
+from django.core.urlresolvers import reverse_lazy
 
 from dbsettings import loading, forms
 
@@ -54,7 +55,8 @@ def app_settings(request, app_label, template='dbsettings/app_settings.html'):
                                    'location': location})
                     messages.add_message(request, messages.INFO, update_msg)
 
-            return HttpResponseRedirect(request.path)
+            # Problem with settings not updated in form fields on save causing user errors. Sending to admin dash instead
+            return HttpResponseRedirect(reverse_lazy('admin:index'))
     else:
         # Leave the form populated with current setting values
         form = editor()

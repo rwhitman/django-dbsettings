@@ -36,6 +36,15 @@ def get_setting_storage(module_name, class_name, attribute_name):
                 class_name=class_name,
                 attribute_name=attribute_name,
             )
+        except Setting.MultipleObjectsReturned :
+            from django.core.mail import mail_admins
+            error_msg = "A duplicate DBSettings key was found for module %s , class %s , attribute %s " % (module_name, class_name, attribute_name)
+            mail_admins("DBSettings Error - Duplicate Keys Found", error_msg)
+            storage = Setting.objects.filter(
+                module_name=module_name,
+                class_name=class_name,
+                attribute_name=attribute_name,
+            ).first()
         except Setting.DoesNotExist:
             setting_object = get_setting(module_name, class_name, attribute_name)
             storage = Setting(

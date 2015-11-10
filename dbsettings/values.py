@@ -204,8 +204,6 @@ class StringValue(Value):
 
 class TextValue(Value):
     unitialized_value = ''
-    field = forms.CharField
-
     class field(forms.CharField):
         widget = forms.Textarea(attrs={'class':'vLargeTextField', 'cols' : 40, 'rows' : 10})
 

@@ -400,5 +400,6 @@ class HTMLValue(TextValue):
             from tinymce.widgets import TinyMCE
             widget = TinyMCE
         except ImportError:
-            pass
+            print "Could not load TinyMCE widget for DBSettings HTMLValue field. Using textarea instead."
+            widget = forms.Textarea(attrs={'class':'vLargeTextField', 'cols' : 40, 'rows' : 10})
 

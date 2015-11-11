@@ -1,0 +1,24 @@
+{% extends "dbsettings_mod/dbsettings_base.html" %}
+{% load i18n admin_urls admin_static admin_modify %}
+
+{% block field_sets %}
+
+    {% if form.fields %}
+    {% regroup form by module_name as modules %}
+
+        {% for module in modules %}
+
+            <h2>{% filter capfirst %}{{ module.grouper }}{% endfilter %}</h2>
+            {% regroup module.list by class_name as classes %}
+            {% for class in classes %}
+                {% include "dbsettings_mod/values.html" %}
+            {% endfor %}
+        <br>
+        {% endfor %}
+
+    {% else %}
+        <p>{% trans "You don't have permission to edit these values." %}</p>
+    {% endif %}
+
+
+{% endblock %}

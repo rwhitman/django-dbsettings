@@ -1,11 +1,10 @@
-{% load i18n static %}
 {% regroup class.list|dictsort:"verbose_name" by verbose_name as classes %}
 {% for class in classes %}
-
-    <div class="module">
-    <table summary="{% filter capfirst %}{% blocktrans with class.grouper as name %}Settings included in the {{ name }} class.{% endblocktrans %}{% endfilter %}" width="100%">
-        <caption>{% filter capfirst %}{% if class.grouper %}{{ class.grouper }}{% else %}{% trans "Application settings" %}{% endif %}{% endfilter %}</caption>
-
+    {% if class.grouper %}
+        <tr>
+            <th colspan="2" style="padding-left: 40px;">{% filter capfirst %}{{ class.grouper }}{% endfilter %}</th>
+        </tr>
+    {% endif %}
     {% for field in class.list %}
         {% if field.errors %}
         <tr class="error">
@@ -13,7 +12,7 @@
         </tr>
         {% endif %}
         <tr{% if field.errors %} class="error"{% endif %}>
-            <td style="width: 30%; padding-right: 20px; min-width: 150px;">
+            <td>
                 {{ field.label_tag }}
                 {% if field.help_text %}
                     <p class="help">{{ field.help_text|escape }}</p>
@@ -22,8 +21,4 @@
             <td>{{ field }}</td>
         </tr>
     {% endfor %}
-
-    </table>
-    </div>
-
 {% endfor %}

@@ -14,7 +14,7 @@ from dbsettings import loading, forms
 
 
 @staff_member_required
-def app_settings(request, app_label, template='dbsettings/app_settings.html'):
+def app_settings(request, app_label, template='dbsettings_mod/app_settings.html'):
     # Determine what set of settings this editor is used for
     if app_label is None:
         settings = loading.get_all_settings()
@@ -69,5 +69,5 @@ def app_settings(request, app_label, template='dbsettings/app_settings.html'):
 
 # Site-wide setting editor is identical, but without an app_label
 def site_settings(request):
-    return app_settings(request, app_label=None, template='dbsettings/site_settings.html')
+    return app_settings(request, app_label=None, template='dbsettings_mod/site_settings.html')
 # staff_member_required is implied, since it calls app_settings
